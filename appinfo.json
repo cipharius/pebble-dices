@@ -1,0 +1,29 @@
+{
+    "appKeys": {},
+    "capabilities": [
+        ""
+    ],
+    "companyName": "zars15@inbox.lv",
+    "longName": "Dices",
+    "projectType": "native",
+    "resources": {
+        "media": [
+            {
+                "file": "images/pebble.png",
+                "name": "IMAGE_PEBBLE",
+                "type": "png"
+            }
+        ]
+    },
+    "sdkVersion": "3",
+    "shortName": "Dices",
+    "targetPlatforms": [
+        "aplite",
+        "basalt"
+    ],
+    "uuid": "799e7fbc-8c91-4a79-bf47-3f378c3354df",
+    "versionLabel": "1.0",
+    "watchapp": {
+        "watchface": true
+    }
+}

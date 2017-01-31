@@ -6,4 +6,4 @@
 void main_window_push();
 
 // Updates main_window
-void main_window_update(struct tm *tick_time);
+void main_window_update(int hour, int minute);

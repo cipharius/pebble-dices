@@ -60,7 +60,7 @@ static void window_unload(Window *window) {
 
 void main_window_push() {
   s_window = window_create();
-  window_set_background_color(window, GColorBlack);
+  window_set_background_color(s_window, GColorBlack);
   window_set_window_handlers(s_window, (WindowHandlers) {
     .load = window_load,
     .unload = window_unload

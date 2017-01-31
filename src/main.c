@@ -45,11 +45,9 @@ static void layer_update_proc(struct Layer *layer, GContext *ctx) {
   updated = true;
 }
 
-static void update_time() {
-  time_t temp = time(NULL);
-  struct tm *tick_time = localtime(&temp);
-
+static void update_time(struct tm *tick_time, TimeUnits units_changed) {
   static char buffer[] = "00";
+
   if(clock_is_24h_style()) {
     strftime(buffer, sizeof("00"), "%H", tick_time);
     hour = atoi(buffer);
@@ -66,14 +64,9 @@ static void update_time() {
   }
 }
 
-static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
-  update_time();
-}
-
 static void window_load(Window *window) {
+  // Graphics setup
   window_set_background_color(window, GColorBlack);
-
-  update_time();
 
   s_pebble = gbitmap_create_with_resource(RESOURCE_ID_IMAGE_PEBBLE);
 
@@ -81,7 +74,9 @@ static void window_load(Window *window) {
   layer_set_update_proc(s_canvas, layer_update_proc);
   layer_add_child(window_get_root_layer(window), s_canvas);
 
-  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
+  // Time setup
+  update_time();
+  tick_timer_service_subscribe(MINUTE_UNIT, update_time);
 }
 
 static void window_unload(Window *window) {
@@ -90,6 +85,7 @@ static void window_unload(Window *window) {
 }
 
 static void init() {
+  // Create a window
   s_window = window_create();
   window_set_window_handlers(s_window, (WindowHandlers) {
     .load = window_load,

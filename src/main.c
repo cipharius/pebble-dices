@@ -10,60 +10,28 @@ static int minute = 0;
 
 static bool updated = false;
 
+const int DICE_PINS[][9] = {
+  {0, 0, 0, 0, 0, 0, 0, 0, 0}, /* 0 */
+  {0, 0, 0, 0, 1, 0, 0, 0, 0}, /* 1 */
+  {1, 0, 0, 0, 0, 0, 0, 0, 1}, /* 2 */
+  {1, 0, 0, 0, 1, 0, 0, 0, 1}, /* 3 */
+  {1, 0, 1, 0, 0, 0, 1, 0, 1}, /* ... */
+  {1, 0, 1, 0, 1, 0, 1, 0, 1},
+  {1, 1, 1, 0, 0, 0, 1, 1, 1},
+  {1, 1, 1, 0, 1, 0, 1, 1, 1},
+  {1, 1, 1, 1, 0, 1, 1, 1, 1},
+  {1, 1, 1, 1, 1, 1, 1, 1, 1} /* 9 */
+};
+
 static void draw_dice(GContext *ctx, GRect rect, int pins) {
   graphics_context_set_fill_color(ctx, GColorWhite);
   graphics_fill_rect(ctx, rect, 10, GCornersAll);
+  graphics_context_set_fill_color(ctx, GColorBlack);
 
-  for(int i=0; i<pins; i++) {
-    graphics_context_set_fill_color(ctx, GColorBlack);
-    int n = i;
-    int npair = (pins % 2 == 1);
-    switch(n) {
-      case 0: // 1
-        if(npair) {
-          n = 4;
-        }
-        break;
-      case 1: // 2
-        n = 8;
-        break;
-      case 2: // 3
-        if(npair) {
-          n = 0;
-        } else {
-          n = 2;
-        }
-        break;
-      case 3: // 4
-        n = 6;
-        break;
-      case 4: // 5
-        if(npair) {
-          n = 2;
-        } else {
-          n = 1;
-        }
-        break;
-      case 5: // 6
-        n = 7;
-        break;
-      case 6: // 7
-        if(npair) {
-          n = 1;
-        } else {
-          n = 3;
-        }
-        break;
-      case 7: // 8
-        n = 5;
-        break;
-      case 8: // 9
-        n = 3;
-        break;
-      default:
-        break;
-    };
-    graphics_fill_circle(ctx, GPoint(rect.origin.x+15 + 20*(n%3), rect.origin.y+15 + 20*(int)(n/3)), 6);
+  for(int i=0; i<9; i++) {
+    if (DICE_PINS[pins][i]) {
+      graphics_fill_circle(ctx, GPoint(rect.origin.x+15 + 20*(i%3), rect.origin.y+15 + 20*(int)(i/3)), 6);
+    }
   }
 }
 

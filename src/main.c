@@ -45,7 +45,7 @@ static void layer_update_proc(struct Layer *layer, GContext *ctx) {
   updated = true;
 }
 
-static void update_time(struct tm *tick_time, TimeUnits units_changed) {
+static void update_time(struct tm *tick_time) {
   static char buffer[] = "00";
 
   if(clock_is_24h_style()) {
@@ -64,6 +64,10 @@ static void update_time(struct tm *tick_time, TimeUnits units_changed) {
   }
 }
 
+static void tick_handler(struct tm *tick_time, TimeUnits units_changed) {
+  update_time(tick_time);
+}
+
 static void window_load(Window *window) {
   // Graphics setup
   window_set_background_color(window, GColorBlack);
@@ -75,8 +79,9 @@ static void window_load(Window *window) {
   layer_add_child(window_get_root_layer(window), s_canvas);
 
   // Time setup
-  update_time();
-  tick_timer_service_subscribe(MINUTE_UNIT, update_time);
+  time_t current_time = time(NULL);
+  update_time(localtime(&current_time));
+  tick_timer_service_subscribe(MINUTE_UNIT, tick_handler);
 }
 
 static void window_unload(Window *window) {
